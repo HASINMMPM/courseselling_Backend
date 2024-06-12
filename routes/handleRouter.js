@@ -1,4 +1,4 @@
-const userRouter = require("./UserRouter")
+const userRouter = require("./userRouter")
 
 
 userRouter.use("/user",userRouter)

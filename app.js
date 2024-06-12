@@ -3,9 +3,18 @@ const app = express()
 const port = 3000
 const mongoose = require("mongoose")
 const dotenv =require('dotenv')
-const userRouter = require("./routes/UserRouter")
+const userRouter = require("./routes/userRouter")
+const cookieparser = require('cookie-parser')
+// const cors = require('cors')
 
 dotenv.config();
+app.use(cookieparser())
+// app.use(cors())
+app.use(express.json()) 
+
+
+app.use("/api/v1",userRouter)
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -15,9 +24,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-app.use(express.json()) 
-app.use("/api/v1",userRouter) 
 
 
 
