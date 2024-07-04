@@ -1,13 +1,11 @@
 import User from "../models/userModel.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 import { generateAccessToken } from "../utils/jwt.js";
 
-
-
-const signup = async(req, res) => {
+const signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-    console.log(email)
+    console.log(email);
 
     const userExist = await User.findOne({ email });
     if (userExist) {
@@ -16,9 +14,8 @@ const signup = async(req, res) => {
 
     const saltRounds = 10;
 
-     const hashPassword =await bcrypt.hash(password, saltRounds)
+    const hashPassword = await bcrypt.hash(password, saltRounds);
 
-    
     const newUser = new User({
       email,
       firstName,
@@ -26,40 +23,45 @@ const signup = async(req, res) => {
       hashPassword,
     });
 
-
     // new user save
-    const newUserCreation = await newUser.save()
+    const newUserCreation = await newUser.save();
 
     // if failed
-    if(!newUserCreation){
-       return res.status(400).json({ msg: "user not created" });
+    if (!newUserCreation) {
+      return res.status(400).json({ msg: "user not created" });
     }
 
     const token = generateAccessToken(email);
-    res.cookie("token", token)
-    res.send("welcome and enjoy")
-
-
+    res.cookie("token", token);
+    res.send("welcome and enjoy");
   } catch (error) {
-    console.log( error);
+    console.log(error);
   }
 };
 
-    //    LOGing
+//    LOGing
 
+const login = async (req, res) => {
+  // console.log("work")
+  try {
+    const { email, password } = req.body;
+    console.log(email);
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: "user not found" });
+    }
+    const isMatch = await bcrypt.compare(password, user.hashPassword);
+    if (!isMatch) {
+      return res.status(400).json({ msg: "invalid password" });
+    }
+    if (isMatch) {
+      const token = generateAccessToken(email);
+      res.cookie("token", token);
+      res.send("Hey, we met already");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    export {
-    signup}
+export { signup, login };
