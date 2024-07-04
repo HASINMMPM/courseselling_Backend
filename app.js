@@ -1,35 +1,25 @@
-const express = require("express");
-const app = express();
-const port = 3000;
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const userRouter = require("./routes/userRouter");
-const cookieparser = require("cookie-parser");
-// const cors = require('cors')
+import express from 'express'
+import 'dotenv/config'
+const app = express()
+const port = process.env.port
+import connect from './config/serverConnection.js'
+import v1Router from './router/allRouter.js'
+import cookieParser from 'cookie-parser'
 
-dotenv.config();
-app.use(cookieparser());
-// app.use(cors())
+
+
 app.use(express.json());
+app.use(cookieParser())
+app.use("/",v1Router );
 
-app.use("/api/v1", userRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+
+app.get('/', (req, res) => {
+  res.send('Hello hasi!')
+})
+
+connect()
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
-
-main()
-  .then(console.log("Connected"))
-  .catch((err) => console.log(err));
-
-async function main() {
-  connectionstring = process.env.DB_string;
-  await mongoose.connect(connectionstring);
-}
-
-// app.use(express.json())
-// app.use("/api/v1",userRouter) // "/api/v1" version config cheyya
+  console.log(`Example app listening on port ${port}`)
+})
