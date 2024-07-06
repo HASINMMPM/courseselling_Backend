@@ -8,5 +8,4 @@ InstructorRouter.post('/signup',signup)
 InstructorRouter.post('/login',instructorLogin)
 
 
-
 export default InstructorRouter;

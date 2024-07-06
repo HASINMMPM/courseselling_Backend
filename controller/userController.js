@@ -64,4 +64,13 @@ const login = async (req, res) => {
   }
 };
 
-export { signup, login };
+const allUsers = async (req, res) => {
+  const users = await User.find();
+  if (!users) {
+    return res.send("cant find users");
+  }
+  res.send(users);
+};
+
+
+export { signup, login, allUsers, };

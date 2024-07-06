@@ -46,7 +46,7 @@ const instructorLogin = async (req, res) => {
     }
 
     if (isMatch) {
-     const token = adminToken(email);
+     const token = adminToken(instructor);
       res.cookie("token", token);
       res.status(200).json({ msg: "loging Instructor success " });
     }
