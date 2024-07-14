@@ -77,12 +77,13 @@ const allUsers = async (req, res) => {
 // UPDATE USER
 
 const updateUser = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
   const { firstName, lastName, email, password } = req.body;
-  console.log("id: " + id);
+  console.log(req.body)
+  // console.log("User id: ", id);
   const checkUser = await User.findOne({ _id: id });
   if (!checkUser) {
-    return res.status(404).json({ msg: "Sry, User not found" });
+    return res.status(404).json({ msg: "Sry, User not found"});
   }
   const updateUser = await User.findByIdAndUpdate(
     id,
@@ -102,6 +103,19 @@ const updateUser = async (req, res) => {
 
   res.send(updateUser);
 };
+// const updateUser=async (req,res) =>{
+//   const { id } = req.params;
+//   const userExist = await User.findById(id)
+//   if(!userExist){
+//     return res.status(404).json({ msg: "User not found" });
+//   }
+//    User.findByIdAndUpdate(id,req.body,{new:true}, (err,data) =>{
+//     if(err){
+//       return res.send("error: ",err)
+//     }
+//     res.send(data)
+//   })
+// }
 
 // DELETE USER
 

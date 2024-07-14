@@ -54,5 +54,32 @@ const instructorLogin = async (req, res) => {
     console.log(error);
   }
 };
+const allInstructors =async (req,res) =>{
+  try {
+    const instructors = await Instructor.find();
+    if (!instructors) {
+      return res.status(400).send("no instructors found");
+    }
+    res.send(instructors);
+  } catch (error) {
+    console.log(error);
+  }
+}
+const deleteInstructor = async (req,res) =>{
+  try {
+    const { id } = req.params;
+    const checkInstructer =await Instructor.findOne({_id:id});
+    if (!checkInstructer) {
+      return res.status(400).send("instructor not found");
+    }
+    const deletedInstructor = await Instructor.findByIdAndDelete(id);
+    if (!deletedInstructor) {
+      return res.status(400).send("instructor deletion failed");
+    }
+    res.send("deleted Instructor");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-export { instructorLogin, signup };
+export { instructorLogin, signup,allInstructors,deleteInstructor };
